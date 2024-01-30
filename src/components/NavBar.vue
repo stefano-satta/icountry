@@ -35,14 +35,14 @@ const toggleOpenMenu = () => {
             <RouterLink to="/" 
               class="block py-2 px-3 text-black md:p-0 dark:text-white cursor-pointer" 
               aria-current="page">
-              Go to Home
+              todos
             </RouterLink>
           </li>
           <li>
-            <RouterLink to="/"
+            <RouterLink to="/weather"
               class="block py-2 px-3 text-black md:p-0 dark:text-white cursor-pointer" 
               aria-current="page">
-              Contact
+              weather
             </RouterLink>
           </li>
           <!-- <li>

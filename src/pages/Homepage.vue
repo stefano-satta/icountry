@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import { ref } from 'vue';
     import ToDoItem from '../components/ToDoItem.vue';
-    import head_wallpaper from './../assets/images/wallpaper_homepage.png'
+    import head_wallpaper from './../assets/images/wallpaper_homepage.png';
     import { ItemProps } from '../types';
 
     const toDoList = ref<ItemProps[]>([
