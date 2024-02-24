@@ -6,7 +6,6 @@
     import { AxiosResponse } from 'axios';
     import Loading from './../components/Loading.vue';
 
-
     const currentCity = ref<CityWeather>();
     const currentWeather = ref<Meteo>();
     const loadingCityName = ref(false);
@@ -28,18 +27,19 @@
             loadingWeather.value = true;
             
             navigator.geolocation.getCurrentPosition(function(location) {
-                console.log(location.coords.latitude);
-                console.log(location.coords.longitude);
-                console.log(location.coords.accuracy);
+                const {coords} = location;
+                console.log(coords.latitude);
+                console.log(coords.longitude);
+                console.log(coords.accuracy);
                 
-                getCityNameByCoords(location.coords.latitude, location.coords.longitude)
+                getCityNameByCoords(coords.latitude, coords.longitude)
                     .then(({data}: AxiosResponse<CityWeather[]>) => {
                         const city = data[0];
                         currentCity.value = {name: city.name, country: city.country, state: city.state};
                         console.log('coords to city name', data, currentCity.value);
                     })
                     .finally(() => loadingCityName.value = false)
-                getCurrentWeather(location.coords.latitude, location.coords.longitude)
+                getCurrentWeather(coords.latitude, coords.longitude)
                     .then(({data}) => {
                         currentWeather.value = data;
                         console.log('success city meteo ', data)
@@ -111,7 +111,6 @@
                 <span class="me-2">Min: {{ getCelsiusTemp(currentWeather?.main.temp_min) }}</span>
                 <span>Max: {{ getCelsiusTemp(currentWeather?.main.temp_max) }}</span>
             </div>
-            
         </div>
     </div>
 </template>
