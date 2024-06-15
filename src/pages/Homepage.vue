@@ -10,6 +10,7 @@
         // {id: 3, isCompleted: true, text: 'Second item', creationDate: new Date().toLocaleDateString() }
     ]);
     let newItem = '';
+    let completeItem = ref<number>(toDoList.value.filter( (todo: ItemProps) => todo.isCompleted).length);
 
     const createItem = (e: Event) => {
         const textInserted = (e.target as HTMLInputElement).value;
@@ -20,10 +21,12 @@
     const completedItem = (itemChanged: ItemProps) => {
         let indexToEdit = toDoList.value.findIndex(el => el.id == itemChanged.id);
         toDoList.value[indexToEdit].isCompleted = itemChanged.isCompleted;
+        completeItem.value = toDoList.value.filter( (todo: ItemProps) => todo.isCompleted).length;
     };
 
     const deleteItem = (itemRemoved: ItemProps) => {
         toDoList.value = toDoList.value.filter(el => el.id != itemRemoved.id);
+        completeItem.value = toDoList.value.filter( (todo: ItemProps) => todo.isCompleted).length;
     }
 </script>
 
@@ -39,7 +42,10 @@
             @keyup.enter="createItem($event)"/>
     </div>
     <div class="w-full py-6 md:py-8 flex items-center flex-col">
-        <div v-if="toDoList.length" class="flex justify-end full-w dark:text-white w-5/6 md:w-1/3">Items: {{ toDoList.length }}</div>
+        <div v-if="toDoList.length" class="flex justify-end full-w dark:text-white w-5/6 md:w-1/3">
+          <span class="mr-4">Completed: {{ completeItem }}</span>
+          <span>Total: {{ toDoList.length }}</span>
+        </div>
         <ToDoItem v-if="toDoList.length" 
             v-for="itemToDoList in toDoList" 
             :key="itemToDoList.id"
