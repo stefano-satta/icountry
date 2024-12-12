@@ -1,5 +1,5 @@
 export const truncateText = (text: string, maxLength: number = 50) => {
-    return text.length >= maxLength ? `${text.substring(0, 50)}...` : text;
+    return text.length >= maxLength ? `${text.substring(0, maxLength)}...` : text;
 }
 
 export const getWeatherIcon = (icon: string | undefined): string => {

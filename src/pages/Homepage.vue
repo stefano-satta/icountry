@@ -1,58 +1,52 @@
 <script setup lang="ts">
-    import { ref } from 'vue';
-    import ToDoItem from '../components/ToDoItem.vue';
-    import head_wallpaper from './../assets/images/wallpaper_homepage.png';
-    import { ItemProps } from '../types';
+import {ref, watch} from 'vue';
+  import head_wallpaper from './../assets/images/travel_bg.png';
+  import {Country} from '../types';
+  import router from "../router";
+  import {getCountry} from "../utils/api.ts";
+  import {AxiosError, AxiosResponse} from "axios";
+  import {store} from "../store";
+  import ErrorMsg from "../components/ErrorMsg.vue";
+  import Loading from "../components/Loading.vue";
 
-    const toDoList = ref<ItemProps[]>([
-        // {id: 1, isCompleted: false, text: Array(80).fill('I').toString(), creationDate: new Date().toLocaleDateString() },
-        // {id: 2, isCompleted: true, text: 'First item', creationDate: new Date().toLocaleDateString() },
-        // {id: 3, isCompleted: true, text: 'Second item', creationDate: new Date().toLocaleDateString() }
-    ]);
-    let newItem = '';
-    let completeItem = ref<number>(toDoList.value.filter( (todo: ItemProps) => todo.isCompleted).length);
+  let newCountry = ref('');
+  let isLoading = ref<boolean>(false);
+  let errorMsg = ref<string>("");
+  watch(newCountry, () => errorMsg.value = "");
 
-    const createItem = (e: Event) => {
-        const textInserted = (e.target as HTMLInputElement).value;
-        toDoList.value.push({id: toDoList.value.length+2, isCompleted: false, text: textInserted, creationDate: new Date().toLocaleDateString()});
-        newItem = '';
-    }
+  const searchCountry = (e: Event) => {
+    const country = (e.target as HTMLInputElement).value;
+    if (country.length == 0) return;
+    isLoading.value = true;
+    newCountry.value = "";
 
-    const completedItem = (itemChanged: ItemProps) => {
-        let indexToEdit = toDoList.value.findIndex(el => el.id == itemChanged.id);
-        toDoList.value[indexToEdit].isCompleted = itemChanged.isCompleted;
-        completeItem.value = toDoList.value.filter( (todo: ItemProps) => todo.isCompleted).length;
-    };
-
-    const deleteItem = (itemRemoved: ItemProps) => {
-        toDoList.value = toDoList.value.filter(el => el.id != itemRemoved.id);
-        completeItem.value = toDoList.value.filter( (todo: ItemProps) => todo.isCompleted).length;
-    }
+    getCountry(country)
+      .then((resp: AxiosResponse<Country[]>) => {
+        store.actions.setCountry(resp.data[0]);
+        router.push(`/country/${country?.toLowerCase()}`);
+      })
+      .catch((err: AxiosError) => errorMsg.value = err.message)
+      .finally(() => {
+        isLoading.value = false;
+      })
+  }
 </script>
 
 <template>
-    <div class="w-full py-8 flex justify-center items-center flex-col">
-        <img :src="head_wallpaper" alt="todolist_img" class="w-64 md:w-1/5 mb-8">
-        <input type="text"
-            class="border bg-white dark:bg-slate-700 rounded-full px-4 py-4 w-5/6 md:w-1/2 
-                focus:shadow focus:shadow-grey-900 focus:outline-none placeholder:text-center dark:text-white"
-            value=""
-            placeholder="Insert new task"
-            v-model="newItem"
-            @keyup.enter="createItem($event)"/>
+  <div class="w-full py-8 flex justify-center items-center flex-col">
+    <img :src="head_wallpaper" alt="todolist_img" class="md:max-w-2xl mb-2">
+    <h1 class="text-black dark:text-white text-5xl font-bold mb-8">iCountry</h1>
+    <div class="flex justify-center items-center w-full md:w-3/4 lg:w-1/2 relative">
+      <input type="text"
+        class="border bg-white dark:bg-slate-700 rounded-full py-4 w-full
+          focus:shadow focus:shadow-grey-900 focus:outline-none placeholder:text-center text-center text-black dark:text-white"
+        placeholder="Search country"
+        v-model="newCountry"
+        @keyup.enter="searchCountry($event)"/>
+      <Loading v-if="isLoading" class="absolute right-4"/>
     </div>
-    <div class="w-full py-6 md:py-8 flex items-center flex-col">
-        <div v-if="toDoList.length" class="flex justify-end full-w dark:text-white w-5/6 md:w-1/3">
-          <span class="mr-4">Completed: {{ completeItem }}</span>
-          <span>Total: {{ toDoList.length }}</span>
-        </div>
-        <ToDoItem v-if="toDoList.length" 
-            v-for="itemToDoList in toDoList" 
-            :key="itemToDoList.id"
-            :itemToDo="itemToDoList"
-            @emitCompletedItem="completedItem($event)"
-            @emitRemoveItem="deleteItem($event)"/>
-    </div>
+    <ErrorMsg :text="errorMsg" v-if="errorMsg" class="mt-8"/>
+  </div>
 </template>
 
 <style scoped></style>

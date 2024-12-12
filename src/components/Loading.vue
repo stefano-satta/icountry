@@ -1,8 +1,7 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
-    <i class="fa-solid fa-circle-notch animate-spin fa-2xl dark:text-white"></i>
+    <i class="fa-solid fa-circle-notch fa-spin fa-2xl dark:text-white"></i>
 </template>
 
 <style scoped></style>
