@@ -1,3 +1,3 @@
 module.exports = {
-    publicPath: "/icountry/"
+    //publicPath: "/icountry/"
 };
