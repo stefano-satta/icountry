@@ -1,8 +1,9 @@
 {
-  "name": "vue-test-project",
+  "name": "icountry",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://stefano-satta.github.io/icountry",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
