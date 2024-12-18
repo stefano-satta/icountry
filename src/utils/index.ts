@@ -9,3 +9,7 @@ export const getWeatherIcon = (icon: string | undefined): string => {
 export const getCelsiusTemp = (kelvinDeg: number | undefined): string => {
     return kelvinDeg ? `${Math.round(kelvinDeg - 273.15)} °C` : '';
 }
+
+export const capitalize = (word: string) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+}

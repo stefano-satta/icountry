@@ -51,10 +51,10 @@ export interface CoatOfArms {
 }
 
 export interface Currencies {
-    EUR: Eur;
+    [key: string]: TypeCurrency;
 }
 
-export interface Eur {
+export interface TypeCurrency {
     name:   string;
     symbol: string;
 }
