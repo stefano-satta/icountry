@@ -7,7 +7,7 @@ import AllCountries from "../pages/AllCountries.vue";
 const routes: RouteRecordRaw[] = [
     {path: '/', component: HomepageVue },
     {path: '/all-countries', component: AllCountries},
-    {path: '/country/:country', component:  CountryVue},
+    {path: '/country/:country', component: CountryVue},
     {path: '/weather', component: WeatherVue}
 ];
 
