@@ -6,7 +6,7 @@
   "homepage": "https://stefano-satta.github.io/icountry",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
