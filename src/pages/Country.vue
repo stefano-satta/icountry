@@ -64,7 +64,7 @@
       <div class="border rounded-3xl"></div>
       <Box label="POPULATION" :value="country?.population.toLocaleString()" icon="fa-person"/>
       <Box label="CURRENCY" :value="currency" icon="fa-money-bill"/>
-      <Box label="GUIDE" :value="setGuide()" icon="fa-car"/>
+      <Box label="GUIDE" :value="setGuide()" icon="fa-car" />
 
     </div>
   </div>
