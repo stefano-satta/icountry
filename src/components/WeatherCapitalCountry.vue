@@ -7,14 +7,11 @@
 </script>
 
 <template>
-  <!--v-if="(!loadingCityName || !loadingWeather) && currentCity?.name"-->
-    <div class="border shadow rounded-3xl p-8 flex justify-start items-center flex-col dark:text-white w-full">
+    <div class="border shadow rounded-3xl p-8 flex justify-start items-center flex-col dark:text-white dark:bg-slate-800 w-full">
       <div v-if="city?.name" class="text-3xl dark:text-white mb-6">
-        <p>
-          <i class="fa-solid fa-location-dot dark:text-white mr-2"></i>
+        <p class="flex items-center">
+          <i class="fa-solid fa-location-dot text-xl dark:text-white mr-2"/>
           <span>{{ city?.name }}</span>
-          <!--              <span v-if="currentCity?.state">, {{ currentCity?.state }}</span>
-                        <span v-if="currentCity?.country">, {{ currentCity?.country.toUpperCase() }}</span>-->
         </p>
       </div>
       <div class="text-6xl font-bold">{{ getCelsiusTemp(currentWeather?.main.temp) }}</div>

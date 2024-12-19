@@ -85,7 +85,7 @@ export interface Idd {
 }
 
 export interface Languages {
-    ita: string;
+    [key:string]: string;
 }
 
 export interface Maps {

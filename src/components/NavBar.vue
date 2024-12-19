@@ -51,7 +51,7 @@
               @click="toggleOpenMenu"
               class="block py-2 px-3 text-black md:p-0 dark:text-white cursor-pointer" 
               aria-current="page">
-              weather
+              Weather
             </RouterLink>
           </li>
           <!-- <li>

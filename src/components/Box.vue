@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="border shadow rounded-3xl p-8 flex justify-between flex-col dark:text-white w-full">
+  <div class="border shadow rounded-3xl p-8 flex justify-between flex-col dark:text-white dark:bg-slate-800 w-full">
     <div class="flex items-center mb-8">
       <i class="fa-solid dark:text-white mr-2" :class="icon"/>
       <h3 class="text-xl">{{label}}</h3>

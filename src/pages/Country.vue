@@ -51,10 +51,13 @@
     }
   }
 
-  const setGuide = (): string => {
-    return `${capitalize(country?.car?.side)} side (${country?.car?.signs})`;
+  const setLanguages = (): string => {
+    let languages: string = '';
+    for (let [key,] of Object.entries(country?.languages)) {
+      languages = `${capitalize(country?.languages[key])}`;
+    }
+    return languages;
   }
-
 
 </script>
 
@@ -66,15 +69,25 @@
     </h1>
     <h3 class="dark:text-white text-xl text-gray-500">{{country?.name?.official}}</h3>
     <h3 class="dark:text-white text-xl text-gray-500">{{country?.continents?.toString()}}</h3>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8" v-if="!loadingCityName && !loadingWeather && country?.name">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 w-full" v-if="!loadingCityName && !loadingWeather && country?.name">
       <WeatherCapitalCountry :current-weather="currentWeather"
                              :city="currentCity"
                              v-if="currentWeather && currentCity"
-                             class="col-span-2"/>
-      <div class="border rounded-3xl"></div>
+                             class="md:col-span-2"/>
+      <div class="border rounded-3xl w-full">
+          <iframe width="100%"
+                  height="100%"
+                  frameborder="0"
+                  scrolling="no"
+                  marginheight="0"
+                  marginwidth="0"
+                  class="border rounded-3xl"
+                  :src="`https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=${country?.name?.common.toLowerCase()}+()&amp;t=&amp;z=5&amp;ie=UTF8&amp;iwloc=B&amp;output=embed`">
+        </iframe>
+      </div>
       <Box label="POPULATION" :value="country?.population?.toLocaleString()" icon="fa-person"/>
       <Box label="CURRENCY" :value="currency" icon="fa-money-bill"/>
-      <Box label="GUIDE" :value="setGuide()" icon="fa-car" />
+      <Box label="LANGUAGES" :value="setLanguages()" icon="fa-language"/>
 
     </div>
   </div>
