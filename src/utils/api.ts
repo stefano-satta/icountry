@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {Continent} from "../types";
 
 const http = axios.create({});
 const APIkey = '720c529366565c4ddf26ecae7d805558';
@@ -25,4 +26,8 @@ export const getCountry = async (country: string) => {
 
 export const getAllCountry = async () => {
     return await http.get(`${BASE_URL_COUNTRIES}/all`);
+}
+
+export const getCountriesByContinent = async (continent: Continent ) => {
+    return await http.get(`${BASE_URL_COUNTRIES}/region/${continent}`);
 }

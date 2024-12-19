@@ -178,4 +178,6 @@ export interface Meteo {
     sunrise: number
     sunset: number
   }
+
+  export type Continent = 'europe' | 'america' | 'asia' | 'oceania' | 'africa';
   

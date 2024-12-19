@@ -1,3 +1,5 @@
+export const ALL_CONTINENTS: string[] = ['europe', 'america', 'asia', 'africa', 'oceania'];
+
 export const truncateText = (text: string, maxLength: number = 50) => {
     return text.length >= maxLength ? `${text.substring(0, maxLength)}...` : text;
 }
@@ -11,5 +13,5 @@ export const getCelsiusTemp = (kelvinDeg: number | undefined): string => {
 }
 
 export const capitalize = (word: string) => {
-    return word.charAt(0).toUpperCase() + word.slice(1);
+    return word?.charAt(0).toUpperCase() + word?.slice(1);
 }
