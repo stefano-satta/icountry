@@ -25,7 +25,8 @@ export const getCountry = async (country: string) => {
 }
 
 export const getAllCountry = async () => {
-    return await http.get(`${BASE_URL_COUNTRIES}/all`);
+    const fields: string = 'name,flags,languages,currencies,capital,continents,region,subregions,population'
+    return await http.get(`${BASE_URL_COUNTRIES}/all?fields=${fields}`);
 }
 
 export const getCountriesByContinent = async (continent: Continent ) => {

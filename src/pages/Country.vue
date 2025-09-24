@@ -53,6 +53,11 @@
 
   const setLanguages = (): string => {
     let languages: string = '';
+  
+    if(!country.languages) {
+      return '';
+    }
+    
     for (let [key,] of Object.entries(country?.languages)) {
       languages = `${capitalize(country?.languages[key])}`;
     }
