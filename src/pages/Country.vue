@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import {CityWeather, Country, Meteo} from "../types";
-  import {onMounted, ref} from "vue";
+  import {onMounted, ref, toRaw} from "vue";
   import {store} from "../store";
-  import {getCoordsByCityName, getCurrentWeather} from "../utils/api.ts";
-  import {AxiosError, AxiosResponse} from "axios";
+  import {getCurrentWeather} from "../utils/api.ts";
+  import {AxiosError} from "axios";
   import WeatherCapitalCountry from "../components/WeatherCapitalCountry.vue";
   import Box from "../components/Box.vue";
   import {capitalize} from "../utils";
@@ -18,49 +18,56 @@
   let currency = ref("");
 
   onMounted(() => {
-    console.log('mounted ', country)
-    if (!country?.name) {
-      router.push('/');
-    }
-    setCurrency();
+    if (!country?.names) {
+      router.back();
+    } else {
+      currentCity.value = {name: country?.capitals[0]?.name, country: country?.names?.common, state: ''};
+      setCurrency();
 
-    if (country?.name) {
-      loadingWeather.value = true;
-      getCoordsByCityName(country?.capital?.toString())
-        .then(({data}: AxiosResponse<CityWeather[]>) => {
-          const city = data[0];
-          currentCity.value = {name: city?.name, country: city?.country || '', state: city?.state || ''};
-          return {lat: city.lat, lon: city.lon, name: city.name, country: city.country, state: city.state}
-        })
-        .then((city: CityWeather) => getCurrentWeather(city.lat!, city.lon!))
-        .then( ({data}) => currentWeather.value = data)
-        .catch((err: AxiosError) => {
-          searchErrorCity.value = true;
-          currentCity.value = {name: '', country: '', state: ''}
-        })
-        .finally(() => loadingWeather.value = false)
+      if (country?.names) {
+        loadingWeather.value = true;
+        getCurrentWeather(country.coordinates.lat!, country.coordinates.lng!)
+            .then( ({data}) => {
+              currentWeather.value = data;
+              console.log(data, currentWeather.value)
+            })
+            .catch((err: AxiosError) => {
+              searchErrorCity.value = true;
+              currentCity.value = {name: '', country: '', state: ''}
+            })
+            .finally(() => loadingWeather.value = false)
+        /* loadingWeather.value = true;
+         getCoordsByCityName(country?.capitals[0]?.name)
+           .then(({data}: AxiosResponse<CityWeather[]>) => {
+             const city = data[0];
+             currentCity.value = {name: city?.name, country: city?.country || '', state: city?.state || ''};
+             return {lat: city.lat, lon: city.lon, name: city.name, country: city.country, state: city.state}
+           })
+           .then((city: CityWeather) => getCurrentWeather(city.lat!, city.lon!))
+           .then( ({data}) => currentWeather.value = data)
+           .catch((err: AxiosError) => {
+             searchErrorCity.value = true;
+             currentCity.value = {name: '', country: '', state: ''}
+           })
+           .finally(() => loadingWeather.value = false)*/
+      }
     }
-
   })
 
   const setCurrency = () => {
-    if (country?.name) {
-      for (let [key,] of Object.entries(country?.currencies)) {
-        currency.value = `${country?.currencies[key].name} (${country?.currencies[key].symbol})`;
-      }
+    if (country?.names) {
+      currency.value = `${country.currencies[0].name} (${country?.currencies[0].symbol})`;
     }
   }
 
   const setLanguages = (): string => {
     let languages: string = '';
   
-    if(!country.languages) {
+    if(!country?.languages) {
       return '';
     }
-    
-    for (let [key,] of Object.entries(country?.languages)) {
-      languages = `${capitalize(country?.languages[key])}`;
-    }
+
+    languages = `${capitalize(country?.languages[0]?.name)}`
     return languages;
   }
 
@@ -69,15 +76,15 @@
 <template>
   <div class="container mx-auto md:px-32">
     <h1 class="dark:text-white text-4xl font-bold mb-2 flex items-center">
-      {{country?.name?.common}}
-      <img :src="country?.flags?.png" class="w-8 h-7 ms-3" alt="flag"/>
+      {{country?.names?.common}}
+      <img :src="country?.flag?.url_svg" class="w-8 h-7 ms-3" alt="flag"/>
     </h1>
-    <h3 class="dark:text-white text-xl text-gray-500">{{country?.name?.official}}</h3>
+    <h3 class="dark:text-white text-xl text-gray-500">{{country?.names?.official}}</h3>
     <h3 class="dark:text-white text-xl text-gray-500">{{country?.continents?.toString()}}</h3>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 w-full" v-if="!loadingCityName && !loadingWeather && country?.name">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 w-full" v-if="currentWeather">
       <WeatherCapitalCountry :current-weather="currentWeather"
                              :city="currentCity"
-                             v-if="currentWeather && currentCity"
+                             v-if="currentWeather"
                              class="md:col-span-2"/>
       <div class="border rounded-3xl w-full">
           <iframe width="100%"
@@ -87,7 +94,7 @@
                   marginheight="0"
                   marginwidth="0"
                   class="border rounded-3xl"
-                  :src="`https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=${country?.name?.common.toLowerCase()}+()&amp;t=&amp;z=5&amp;ie=UTF8&amp;iwloc=B&amp;output=embed`">
+                  :src="`https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=${country?.names?.common.toLowerCase()}+()&amp;t=&amp;z=5&amp;ie=UTF8&amp;iwloc=B&amp;output=embed`">
         </iframe>
       </div>
       <Box label="POPULATION" :value="country?.population?.toLocaleString()" icon="fa-person"/>

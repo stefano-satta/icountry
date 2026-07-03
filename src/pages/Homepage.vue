@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ref, watch} from 'vue';
   import head_wallpaper from './../assets/images/travel_bg.png';
-  import {Country} from '../types';
+import {Country, CountryResponse} from '../types';
   import router from "../router";
   import {getCountry} from "../utils/api.ts";
   import {AxiosError, AxiosResponse} from "axios";
@@ -21,11 +21,17 @@ import {ref, watch} from 'vue';
     newCountry.value = "";
 
     getCountry(country)
-      .then((resp: AxiosResponse<Country[]>) => {
-        store.actions.setCountry(resp.data[0]);
-        router.push(`/country/${country?.toLowerCase()}`);
+      .then(({data}: AxiosResponse<CountryResponse>) => {
+
+        if (data.data.objects.length > 0) {
+          store.actions.setCountry(data.data.objects[0]);
+          router.push(`/country/${country?.toLowerCase()}`);
+        } else {
+         errorMsg.value = "Under construction, please try another one! :)"
+        }
+
       })
-      .catch((err: AxiosError) => errorMsg.value = err.message)
+      .catch((err: AxiosError) => errorMsg.value = "Oh nooo! try again later.")
       .finally(() => {
         isLoading.value = false;
       })

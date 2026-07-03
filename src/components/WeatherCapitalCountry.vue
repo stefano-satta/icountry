@@ -1,9 +1,7 @@
 <script setup lang="ts">
   import {getCelsiusTemp, getWeatherIcon} from "../utils";
   import {CityWeather, Meteo} from "../types";
-
   const {city, currentWeather} = defineProps<{city: CityWeather, currentWeather: Meteo}>();
-
 </script>
 
 <template>
