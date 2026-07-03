@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { onMounted, onUnmounted, ref } from 'vue';
+    import { onMounted, ref } from 'vue';
     import {getCityNameByCoords, getCoordsByCityName, getCurrentWeather} from './../utils/api';
     import {getWeatherIcon, getCelsiusTemp} from './../utils';
     import { CityWeather, Meteo } from '../types';
@@ -16,13 +16,8 @@
         getPositionCoords();
     })
 
-    onUnmounted(() => {
-
-    })
-
     const getPositionCoords = () => {
         if (navigator.geolocation) {
-            console.log('sto entrando');
             loadingCityName.value = true;
             loadingWeather.value = true;
             

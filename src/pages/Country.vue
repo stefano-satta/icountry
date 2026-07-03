@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import {CityWeather, Country, Meteo} from "../types";
-  import {onMounted, ref, toRaw} from "vue";
+  import {onMounted, ref} from "vue";
   import {store} from "../store";
   import {getCurrentWeather} from "../utils/api.ts";
   import {AxiosError} from "axios";
@@ -10,9 +10,8 @@
   import router from "../router";
 
   let country: Country = store.getters.getCountry();
-  let currentCity = ref<CityWeather>();
+  let currentCity = ref<CityWeather | undefined>();
   let currentWeather = ref<Meteo>();
-  let loadingCityName = ref(false);
   let loadingWeather = ref(false);
   let searchErrorCity = ref(false);
   let currency = ref("");
@@ -36,20 +35,6 @@
               currentCity.value = {name: '', country: '', state: ''}
             })
             .finally(() => loadingWeather.value = false)
-        /* loadingWeather.value = true;
-         getCoordsByCityName(country?.capitals[0]?.name)
-           .then(({data}: AxiosResponse<CityWeather[]>) => {
-             const city = data[0];
-             currentCity.value = {name: city?.name, country: city?.country || '', state: city?.state || ''};
-             return {lat: city.lat, lon: city.lon, name: city.name, country: city.country, state: city.state}
-           })
-           .then((city: CityWeather) => getCurrentWeather(city.lat!, city.lon!))
-           .then( ({data}) => currentWeather.value = data)
-           .catch((err: AxiosError) => {
-             searchErrorCity.value = true;
-             currentCity.value = {name: '', country: '', state: ''}
-           })
-           .finally(() => loadingWeather.value = false)*/
       }
     }
   })
@@ -70,7 +55,6 @@
     languages = `${capitalize(country?.languages[0]?.name)}`
     return languages;
   }
-
 </script>
 
 <template>

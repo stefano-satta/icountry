@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {ref, watch} from 'vue';
+  import {ref, watch} from 'vue';
   import head_wallpaper from './../assets/images/travel_bg.png';
-import {Country, CountryResponse} from '../types';
+  import {CountryResponse} from '../types';
   import router from "../router";
   import {getCountry} from "../utils/api.ts";
   import {AxiosError, AxiosResponse} from "axios";

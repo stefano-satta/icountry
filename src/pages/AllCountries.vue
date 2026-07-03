@@ -2,7 +2,7 @@
   import {onMounted, ref} from "vue";
   import {getAllCountry, getCountriesByContinent} from "../utils/api.ts";
   import {AxiosError, AxiosResponse} from "axios";
-  import {Continent, Country} from "../types";
+  import {Continent, Country, CountryResponse} from "../types";
   import CountryItem from "../components/CountryItem.vue";
   import Loading from "../components/Loading.vue";
   import ErrorMsg from "../components/ErrorMsg.vue";
@@ -22,7 +22,9 @@
     errorMsg.value = "";
     filterSelected.value = 'all';
     getAllCountry()
-        .then((resp: AxiosResponse<Country[]>) => countries.value = resp.data)
+        .then(({data}: AxiosResponse<CountryResponse>) => {
+          countries.value = data?.data?.objects;
+        })
         .catch((err: AxiosError) => errorMsg.value = err.message)
         .finally(() => isLoading.value = false)
   }
@@ -32,7 +34,9 @@
     errorMsg.value = "";
     filterSelected.value = continent;
     getCountriesByContinent(continent)
-        .then((resp: AxiosResponse<Country[]>) => countries.value = resp.data)
+        .then(({data}: AxiosResponse<CountryResponse>) => {
+          countries.value = data?.data?.objects;
+        })
         .catch((err: AxiosError) => errorMsg.value = err.message)
         .finally(() => isLoading.value = false)
   }

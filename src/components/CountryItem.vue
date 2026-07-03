@@ -18,8 +18,8 @@
        @click="goToCountryDetails()">
     <img :src="country?.flag?.url_svg" alt="" class="w-12">
     <div class="ps-4">
-      <h3 class="text-xl dark:text-white font-bold">{{truncateText(country?.names.common, 25)}}</h3>
-      <p class="text-gray-500 dark:text-gray-300">{{truncateText(country?.names.official, 25)}}</p>
+      <h3 class="text-xl dark:text-white font-bold">{{truncateText(country?.names?.common, 25)}}</h3>
+      <p class="text-gray-500 dark:text-gray-300">{{truncateText(country?.names?.official, 25)}}</p>
     </div>
   </div>
 </template>

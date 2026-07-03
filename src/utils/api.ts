@@ -43,6 +43,6 @@ export const getAllCountry = async () => {
 }
 
 export const getCountriesByContinent = async (continent: Continent ) => {
-    const params =  { region: continent };
+    const params =  { region: continent, limit: 100 };
     return await http.get(`${BASE_URL_COUNTRIES}`, {params});
 }
