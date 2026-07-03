@@ -1,18 +1,15 @@
 import axios from 'axios';
-import {Continent, CustomAxiosConfig} from "../types";
-import country from "../pages/Country.vue";
+import {Continent} from "../types";
 
 const http = axios.create({});
 const APIkey = '720c529366565c4ddf26ecae7d805558';
 const BASE_URL_OWM = 'http://api.openweathermap.org';
 const BASE_URL_COUNTRIES = 'https://api.restcountries.com/countries/v5';
 
-const token = "rc_live_1b2194eb02194a0caba11afcf3c76950"
-
 
 http.interceptors.request.use((config) => {
     if (config.url?.includes(BASE_URL_COUNTRIES)) {
-        config.headers.set({...config.headers, Authorization: `Bearer ${token}` });
+        config.headers.set({...config.headers, Authorization: `Bearer ${import.meta.env.VITE_API_COUNTRY_REST}` });
     }
     return config;
 })
