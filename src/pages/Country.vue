@@ -61,7 +61,7 @@
   <div class="container mx-auto md:px-32">
     <h1 class="dark:text-white text-4xl font-bold mb-2 flex items-center">
       {{country?.names?.common}}
-      <img :src="country?.flag?.url_svg" class="w-8 h-7 ms-3" alt="flag"/>
+      <img v-if="country?.flag?.url_svg" :src="country?.flag?.url_svg" class="w-8 h-7 ms-3" alt="flag"/>
     </h1>
     <h3 class="dark:text-white text-xl text-gray-500">{{country?.names?.official}}</h3>
     <h3 class="dark:text-white text-xl text-gray-500">{{country?.continents?.toString()}}</h3>
@@ -78,7 +78,7 @@
                   marginheight="0"
                   marginwidth="0"
                   class="border rounded-3xl"
-                  :src="`https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=${country?.names?.common.toLowerCase()}+()&amp;t=&amp;z=5&amp;ie=UTF8&amp;iwloc=B&amp;output=embed`">
+                  :src="`https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=${country?.names?.common?.toLowerCase()}+()&amp;t=&amp;z=5&amp;ie=UTF8&amp;iwloc=B&amp;output=embed`">
         </iframe>
       </div>
       <Box label="POPULATION" :value="country?.population?.toLocaleString()" icon="fa-person"/>
